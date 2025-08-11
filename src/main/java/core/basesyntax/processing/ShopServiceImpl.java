@@ -1,7 +1,6 @@
 package core.basesyntax.processing;
 
 import core.basesyntax.operations.OperationStrategy;
-
 import java.util.List;
 
 public class ShopServiceImpl implements ShopService {
