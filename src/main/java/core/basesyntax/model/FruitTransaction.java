@@ -1,9 +1,9 @@
-package core.basesyntax.processing;
+package core.basesyntax.model;
 
 public class FruitTransaction {
-    private Operation operation;
-    private String fruit;
-    private int quantity;
+    private final Operation operation;
+    private final String fruit;
+    private final int quantity;
 
     public FruitTransaction(Operation operation, String fruit, int quantity) {
         this.operation = operation;
@@ -45,7 +45,7 @@ public class FruitTransaction {
                     return op;
                 }
             }
-            throw new IllegalArgumentException("Unknown operation code: " + code);
+            throw new IllegalArgumentException("Invalid operation code: " + code);
         }
     }
 }

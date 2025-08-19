@@ -1,5 +1,7 @@
-package core.basesyntax.processing;
+package core.basesyntax.service.impl;
 
+import core.basesyntax.model.FruitTransaction;
+import core.basesyntax.service.DataConverter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +16,17 @@ public class DataConverterImpl implements DataConverter {
                 if (parts.length != 3) {
                     throw new RuntimeException("Invalid line format: " + line);
                 }
-                FruitTransaction.Operation operation = FruitTransaction
-                        .Operation.fromCode(parts[0]);
+                FruitTransaction.Operation operation =
+                        FruitTransaction.Operation.fromCode(parts[0]);
                 String fruit = parts[1];
                 if (fruit == null || fruit.isEmpty()) {
-                    String message = "Fruit name cannot be null or empty in line: " + line;
-                    throw new RuntimeException(message);
+                    throw new RuntimeException(
+                            "Fruit name cannot be null or empty in line: " + line);
                 }
                 int quantity = Integer.parseInt(parts[2]);
                 if (quantity < 0) {
-                    throw new RuntimeException("Quantity cannot be negative in line: "
-                            + line);
+                    throw new RuntimeException(
+                            "Quantity cannot be negative in line: " + line);
                 }
                 transactions.add(new FruitTransaction(operation, fruit, quantity));
             } catch (NumberFormatException e) {
