@@ -13,6 +13,9 @@ public class OperationStrategyImpl implements OperationStrategy {
 
     @Override
     public OperationHandler get(FruitTransaction.Operation operation) {
+        if (!operationHandlers.containsKey(operation)) {
+            throw new RuntimeException("Unsupported operation: " + operation);
+        }
         return operationHandlers.get(operation);
     }
 }

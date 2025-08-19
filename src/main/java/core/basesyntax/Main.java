@@ -1,3 +1,5 @@
+package core.basesyntax;
+
 import core.basesyntax.operations.BalanceOperation;
 import core.basesyntax.operations.OperationHandler;
 import core.basesyntax.operations.OperationStrategy;
@@ -44,7 +46,7 @@ public class Main {
         String resultingReport = reportGenerator.getReport();
 
         FileWriter fileWriter = new FileWriterImpl();
-        fileWriter.write(resultingReport, "finalReport.csv");
+        fileWriter.write(resultingReport, "src/main/resources/finalReport.csv");
 
         System.out.println("Report created: finalReport.csv");
     }
