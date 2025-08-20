@@ -6,25 +6,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataConverterImpl implements DataConverter {
+    private static final int HEADER_INDEX = 1;
+    private static final int EXPECTED_PARTS_COUNT = 3;
+    private static final int OPERATION_INDEX = 0;
+    private static final int FRUIT_INDEX = 1;
+    private static final int QUANTITY_INDEX = 2;
+    private static final int MIN_QUANTITY = 0;
+
     @Override
     public List<FruitTransaction> convertToTransaction(List<String> lines) {
         List<FruitTransaction> transactions = new ArrayList<>();
-        for (int i = 1; i < lines.size(); i++) {
+        for (int i = HEADER_INDEX; i < lines.size(); i++) {
             String line = lines.get(i);
             try {
                 String[] parts = line.split(",");
-                if (parts.length != 3) {
+                if (parts.length != EXPECTED_PARTS_COUNT) {
                     throw new RuntimeException("Invalid line format: " + line);
                 }
                 FruitTransaction.Operation operation =
-                        FruitTransaction.Operation.fromCode(parts[0]);
-                String fruit = parts[1];
+                        FruitTransaction.Operation.fromCode(parts[OPERATION_INDEX]);
+                String fruit = parts[FRUIT_INDEX];
                 if (fruit == null || fruit.isEmpty()) {
                     throw new RuntimeException(
                             "Fruit name cannot be null or empty in line: " + line);
                 }
-                int quantity = Integer.parseInt(parts[2]);
-                if (quantity < 0) {
+                int quantity = Integer.parseInt(parts[QUANTITY_INDEX]);
+                if (quantity < MIN_QUANTITY) {
                     throw new RuntimeException(
                             "Quantity cannot be negative in line: " + line);
                 }

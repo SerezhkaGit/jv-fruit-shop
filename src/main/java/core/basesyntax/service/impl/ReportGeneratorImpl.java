@@ -10,7 +10,7 @@ public class ReportGeneratorImpl implements ReportGenerator {
 
     @Override
     public String getReport() {
-        StringBuilder report = new StringBuilder("fruit,quantity\n");
+        StringBuilder report = new StringBuilder(HEADER + System.lineSeparator());
         for (Map.Entry<String, Integer> entry : Storage.fruits.entrySet()) {
             report.append(entry.getKey()).append("COMMA")
                     .append(entry.getValue()).append(System.lineSeparator());
