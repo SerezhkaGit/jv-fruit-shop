@@ -24,17 +24,15 @@ import java.util.Map;
 
 public class Main {
     private static final String INPUT_FILE = "reportToRead.csv";
-    private static final String OUTPUT_FILE = "src/main/resources/finalReport.csv";
+    private static final String OUTPUT_FILE = "finalReport.csv";
 
     public static void main(String[] args) {
-        // 1. Read the data from the input CSV file
+
         FileReader fileReader = new FileReaderImpl();
         List<String> inputReport = fileReader.read(INPUT_FILE);
 
-        // 2. Convert the incoming data into FruitTransactions list
         DataConverter dataConverter = new DataConverterImpl();
 
-        // 3. Create and feel the map with all OperationHandler implementations
         Map<FruitTransaction.Operation, OperationHandler> handlers = new HashMap<>();
         handlers.put(FruitTransaction.Operation.BALANCE, new BalanceOperation());
         handlers.put(FruitTransaction.Operation.SUPPLY, new SupplyOperation());
@@ -44,15 +42,12 @@ public class Main {
         OperationStrategy operationStrategy = new OperationStrategyImpl(handlers);
         List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputReport);
 
-        // 4. Process the incoming transactions with applicable OperationHandler implementations
         ShopService shopService = new ShopServiceImpl(operationStrategy);
         shopService.process(transactions);
 
-        // 5.Generate report based on the current Storage state
         ReportGenerator reportGenerator = new ReportGeneratorImpl();
         String report = reportGenerator.getReport();
 
-        // 6. Write the received report into the destination file
         FileWriter fileWriter = new FileWriterImpl();
         fileWriter.write(report, OUTPUT_FILE);
     }
