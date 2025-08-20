@@ -1,6 +1,5 @@
 package core.basesyntax;
 
-import core.basesyntax.db.Storage;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.DataConverter;
 import core.basesyntax.service.FileReader;
@@ -24,29 +23,37 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
+    private static final String INPUT_FILE = "reportToRead.csv";
+    private static final String OUTPUT_FILE = "src/main/resources/finalReport.csv";
+
     public static void main(String[] args) {
-        Storage storage = new Storage();
-
+        // 1. Read the data from the input CSV file
         FileReader fileReader = new FileReaderImpl();
-        List<String> inputReport = fileReader.read("reportToRead.csv");
+        List<String> inputReport = fileReader.read(INPUT_FILE);
 
+        // 2. Convert the incoming data into FruitTransactions list
         DataConverter dataConverter = new DataConverterImpl();
 
+        // 3. Create and feel the map with all OperationHandler implementations
         Map<FruitTransaction.Operation, OperationHandler> handlers = new HashMap<>();
-        handlers.put(FruitTransaction.Operation.BALANCE, new BalanceOperation(storage));
-        handlers.put(FruitTransaction.Operation.SUPPLY, new SupplyOperation(storage));
-        handlers.put(FruitTransaction.Operation.PURCHASE, new PurchaseOperation(storage));
-        handlers.put(FruitTransaction.Operation.RETURN, new ReturnOperation(storage));
+        handlers.put(FruitTransaction.Operation.BALANCE, new BalanceOperation());
+        handlers.put(FruitTransaction.Operation.SUPPLY, new SupplyOperation());
+        handlers.put(FruitTransaction.Operation.PURCHASE, new PurchaseOperation());
+        handlers.put(FruitTransaction.Operation.RETURN, new ReturnOperation());
 
-        List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputReport);
         OperationStrategy operationStrategy = new OperationStrategyImpl(handlers);
+        List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputReport);
+
+        // 4. Process the incoming transactions with applicable OperationHandler implementations
         ShopService shopService = new ShopServiceImpl(operationStrategy);
         shopService.process(transactions);
 
-        ReportGenerator reportGenerator = new ReportGeneratorImpl(storage);
+        // 5.Generate report based on the current Storage state
+        ReportGenerator reportGenerator = new ReportGeneratorImpl();
         String report = reportGenerator.getReport();
 
+        // 6. Write the received report into the destination file
         FileWriter fileWriter = new FileWriterImpl();
-        fileWriter.write(report, "finalReport.csv");
+        fileWriter.write(report, OUTPUT_FILE);
     }
 }

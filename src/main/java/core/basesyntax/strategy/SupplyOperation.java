@@ -4,15 +4,9 @@ import core.basesyntax.db.Storage;
 import core.basesyntax.model.FruitTransaction;
 
 public class SupplyOperation implements OperationHandler {
-    private final Storage storage;
-
-    public SupplyOperation(Storage storage) {
-        this.storage = storage;
-    }
-
     @Override
     public void apply(FruitTransaction transaction) {
-        storage.getFruits().merge(transaction.getFruit(),
+        Storage.getFruits().merge(transaction.getFruit(),
                 transaction.getQuantity(), Integer::sum);
     }
 }
