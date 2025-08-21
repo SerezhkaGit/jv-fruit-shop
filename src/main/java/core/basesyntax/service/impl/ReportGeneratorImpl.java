@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ReportGeneratorImpl implements ReportGenerator {
     private static final char COMMA = ',';
-    private static final String HEADER = "fruit,quantity" + System.lineSeparator();
+    private static final String HEADER = "fruit,quantity";
 
     @Override
     public String getReport() {
